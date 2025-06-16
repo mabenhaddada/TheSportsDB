@@ -1,0 +1,8 @@
+//
+//  Teams.swift
+//  TheSportsDB
+//
+//  Created by Mohamed Amine BEN HADDADA on 13/06/2025.
+//
+
+import Foundation
