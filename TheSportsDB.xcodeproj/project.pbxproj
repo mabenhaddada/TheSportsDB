@@ -34,9 +34,22 @@
 		D2A844CA2DF8476E004ADB5E /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D20328BF2DFFE29700828D53 /* Exceptions for "TheSportsDB" folder in "TheSportsDB" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = D22EE1722DF242D000DE1253 /* TheSportsDB */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D22EE1752DF242D000DE1253 /* TheSportsDB */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D20328BF2DFFE29700828D53 /* Exceptions for "TheSportsDB" folder in "TheSportsDB" target */,
+			);
 			path = TheSportsDB;
 			sourceTree = "<group>";
 		};
