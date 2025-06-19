@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NukeUI
 
 struct TeamsDetailsView: View {
     @Environment(Home.Coordinator.self) private var coordinator
@@ -54,13 +55,15 @@ struct TeamCardView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Spacer()
-                AsyncImage(url: team.banner) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 80)
-                } placeholder: {
-                    ProgressView()
+                LazyImage(url: team.banner) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, maxHeight: 80)
+                    } else {
+                        ProgressView()
+                    }
                 }
                 Spacer()
             }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NukeUI
 import Dependencies
 
 struct SearchableLeaguesView: View {
@@ -54,7 +55,10 @@ fileprivate struct SearchableTeamsGridView: View {
     @Environment(Home.Coordinator.self) private var coordinator
     
     private let teams: [Team]
-    private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 80, maximum: 180)), count: 2)
+    private let columns: [GridItem] = .init(
+        repeating: .init(.flexible()),
+        count: 2
+    )
     
     init(teams: [Team]) {
         self.teams = teams
@@ -68,6 +72,7 @@ fileprivate struct SearchableTeamsGridView: View {
                 }
             }
         }
+        .padding()
     }
 }
 
@@ -84,16 +89,17 @@ fileprivate struct TeamView: View {
         Button(action: {
             coordinator.push(.teamDetailsView(team.name))
         }, label: {
-            AsyncImage(url: team.badge) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .clipShape(Rectangle())
-            } placeholder: {
-                ProgressView()
-                    .clipShape(Rectangle())
+            LazyImage(url: team.badge) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Rectangle())
+                } else {
+                    ProgressView()
+                        .clipShape(Rectangle())
+                }
             }
-            .padding()
         })
         .buttonStyle(.plain)
         .background(

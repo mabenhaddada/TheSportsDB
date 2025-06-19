@@ -25,7 +25,14 @@ final actor APILiveService: APIServiceProtocol {
     // openssl s_client -connect host:port -showcerts </dev/null 2>/dev/null | openssl x509 -outform DER > domain.cer
     
     private static func makeSession() -> Session {
-        Session(
+        let configuration = {
+            let config = URLSessionConfiguration.af.default
+            config.requestCachePolicy = .returnCacheDataElseLoad
+            return config
+        }()
+        
+        return Session(
+            configuration: configuration,
             serverTrustManager: .init(evaluators: APIConfig.allCases.reduce(into: [String: any ServerTrustEvaluating](), {
                 if let host = $1.baseURL.host(),
                    let serverTrustEvaluator = $1.serverTrustEvaluator {
