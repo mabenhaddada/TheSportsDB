@@ -75,17 +75,17 @@ public struct BasicStateView<ViewData: Sendable & Equatable, LoadingContent: Vie
     }
 
     private func performFetchData(showLoading: Bool = true) async {
-        if showLoading { withAnimation { state = .loading } }
+        if showLoading { withAnimation(.easeIn(duration: 0.3)) { state = .loading } }
 
         do {
             guard let viewData = try await fetchData() else {
-                withAnimation { state = .notFound }
+                withAnimation(.easeOut(duration: 0.3)) { state = .notFound }
                 return
             }
             
-            withAnimation { state = .dataLoaded(viewData) }
+            withAnimation(.easeIn(duration: 0.3)) { state = .dataLoaded(viewData) }
         } catch {
-            withAnimation { state = .error(error) }
+            withAnimation(.easeOut(duration: 0.3)) { state = .error(error) }
         }
     }
 }
