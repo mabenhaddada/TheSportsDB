@@ -38,5 +38,5 @@ protocol TheSportsDBServiceProtocol: Actor, GlobalActor, Sendable {
     ///   - id: The id of the legue
     ///
     /// - Returns: List all the teams in a specific league by the leagues id
-    var getTeams: @Sendable (Int) async throws -> [Team] { get }
+    var getTeams: GetTeams { get }
 }
