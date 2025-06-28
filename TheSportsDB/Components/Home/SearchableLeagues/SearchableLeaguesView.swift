@@ -12,9 +12,11 @@ import Dependencies
 struct SearchableLeaguesView: View {
     @Environment(Home.Coordinator.self) private var coordinator
     
-    @State var loadingState: BasicLoadingState<([League])> = .idle
+    @State private var loadingState: BasicLoadingState<([League])> = .idle
     
     @State private var viewModel: SearchableLeaguesViewModel
+    
+    @State private var searchText: String = ""
     
     static func make(_ vm: SearchableLeaguesViewModel) -> Self {
         SearchableLeaguesView(viewModel: vm)
@@ -33,7 +35,6 @@ struct SearchableLeaguesView: View {
             state: $loadingState,
             dataContent: { _ in
                 SearchableTeamsGridView(teams: viewModel.teams)
-                    .animation(.easeIn, value: viewModel.searchString)
                     .navigationTitle("SearchableLeaguesView.Title")
                     .navigationBarTitleDisplayMode(.inline)
                     .scrollIndicators(.hidden)
@@ -55,24 +56,31 @@ fileprivate struct SearchableTeamsGridView: View {
     @Environment(Home.Coordinator.self) private var coordinator
     
     private let teams: [Team]
-    private let columns: [GridItem] = .init(
-        repeating: .init(.flexible()),
-        count: 2
-    )
     
     init(teams: [Team]) {
         self.teams = teams
     }
+    
+    private let columns: [GridItem] = .init(
+        repeating: .init(.flexible()),
+        count: 2
+    )
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, alignment: .center) {
-                ForEach(teams) { team in
-                    TeamView(team)
+        #if DEBUG
+                Self._printChanges()
+        #endif
+        
+        return ScrollView {
+            ZStack {
+                LazyVGrid(columns: columns, alignment: .center) {
+                    ForEach(teams, id: \.id) { team in
+                        TeamView(team: team)
+                    }
                 }
             }
+            .padding()
         }
-        .padding()
     }
 }
 
@@ -81,32 +89,39 @@ fileprivate struct TeamView: View {
     
     private let team: Team
     
-    init(_ team: Team) {
+    init(team: Team) {
         self.team = team
     }
     
     var body: some View {
-        Button(action: {
-            coordinator.push(.teamDetailsView(team.name))
-        }, label: {
-            LazyImage(url: team.badge) { state in
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(Rectangle())
-                } else {
-                    ProgressView()
-                        .clipShape(Rectangle())
-                }
-            }
-        })
-        .buttonStyle(.plain)
-        .background(
+        #if DEBUG
+                Self._printChanges()
+        #endif
+
+        return ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color(.secondarySystemBackground))
                 .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
-        )
+            
+            Button(action: {
+                coordinator.push(.teamDetailsView(team.name))
+            }, label: {
+                LazyImage(url: team.badge) { state in
+                    if state.isLoading {
+                        ProgressView()
+                            .clipShape(Rectangle())
+                    } else if let image = state.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(Rectangle())
+                    } else {
+                        ContentUnavailableView(String.empty, systemImage: "exclamationmark.circle")
+                    }
+                }
+            })
+            .padding()
+        }.transition(.scale.combined(with: .opacity).animation(.easeOut(duration: 0.3)))
     }
 }
 

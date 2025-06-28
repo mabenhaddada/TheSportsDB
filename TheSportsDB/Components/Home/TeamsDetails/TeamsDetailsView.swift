@@ -11,7 +11,7 @@ import NukeUI
 struct TeamsDetailsView: View {
     @Environment(Home.Coordinator.self) private var coordinator
     
-    @State var loadingState: BasicLoadingState<Team?> = .idle
+    @State private var loadingState: BasicLoadingState<Team?> = .idle
     
     @State private var viewModel: TeamsDetailsViewModel
     
@@ -56,13 +56,15 @@ struct TeamCardView: View {
             HStack {
                 Spacer()
                 LazyImage(url: team.banner) { state in
-                    if let image = state.image {
+                    if state.isLoading {
+                        ProgressView()
+                    } else if let image = state.image {
                         image
                             .resizable()
                             .scaledToFill()
                             .frame(maxWidth: .infinity, maxHeight: 80)
                     } else {
-                        ProgressView()
+                        ContentUnavailableView(String.empty, systemImage: "exclamationmark.circle")
                     }
                 }
                 Spacer()
