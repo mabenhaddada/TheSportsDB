@@ -33,12 +33,12 @@ final actor APILiveService: APIServiceProtocol {
         
         return Session(
             configuration: configuration,
-            serverTrustManager: .init(evaluators: APIConfig.allCases.reduce(into: [String: any ServerTrustEvaluating](), {
-                if let host = $1.baseURL.host(),
-                   let serverTrustEvaluator = $1.serverTrustEvaluator {
-                    $0[host] = serverTrustEvaluator
-                }
-            })),
+//            serverTrustManager: .init(evaluators: APIConfig.allCases.reduce(into: [String: any ServerTrustEvaluating](), {
+//                if let host = $1.baseURL.host(),
+//                   let serverTrustEvaluator = $1.serverTrustEvaluator {
+//                    $0[host] = serverTrustEvaluator
+//                }
+//            })),
             cachedResponseHandler: ResponseCacher(behavior: .cache),
             eventMonitors: [NetworkLogger(liveLogger)]
         )

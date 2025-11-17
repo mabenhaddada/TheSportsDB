@@ -12,7 +12,7 @@ struct TheSportsDBApp: App {
     @State private var homeCordinator: Home.Coordinator = .instance
     
     var body: some Scene {
-        WindowGroup("TheSportsDB", id: "TheSportsDB-id")  {
+        WindowGroup(.theSportsDB, id: "TheSportsDB-id")  {
             HomeView(coordinator: homeCordinator)
         }
     }
