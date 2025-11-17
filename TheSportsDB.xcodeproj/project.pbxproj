@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D20322F92DFFD86900828D53 /* README in Resources */ = {isa = PBXBuildFile; fileRef = D20322F82DFFD86900828D53 /* README */; };
+		D20322F92DFFD86900828D53 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D20322F82DFFD86900828D53 /* README.md */; };
 		D255E3BA2DF9C329009F1570 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = D255E3B92DF9C329009F1570 /* GRDB */; };
 		D255E3BD2DF9C41E009F1570 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D255E3BC2DF9C41E009F1570 /* Alamofire */; };
 		D28CFF302E0449CD0068D54E /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = D28CFF2F2E0449CD0068D54E /* NukeUI */; };
@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D20322F82DFFD86900828D53 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		D20322F82DFFD86900828D53 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D22EE1732DF242D000DE1253 /* TheSportsDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheSportsDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D255E5CE2DFF7710009F1570 /* TheSportsDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TheSportsDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A844C82DF8474A004ADB5E /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		D22EE16A2DF242D000DE1253 = {
 			isa = PBXGroup;
 			children = (
-				D20322F82DFFD86900828D53 /* README */,
+				D20322F82DFFD86900828D53 /* README.md */,
 				D2A844CA2DF8476E004ADB5E /* Makefile */,
 				D2A844C82DF8474A004ADB5E /* Gemfile */,
 				D2DEF7972DF639F300528781 /* Tools */,
@@ -220,7 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D20322F92DFFD86900828D53 /* README in Resources */,
+				D20322F92DFFD86900828D53 /* README.md in Resources */,
 				D2A844C92DF8474A004ADB5E /* Gemfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
