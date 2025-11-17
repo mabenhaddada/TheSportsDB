@@ -68,7 +68,7 @@ final actor Persistence {
         }
     }
     
-    private static var dbMigrator: DatabaseMigrator = {
+    private static let dbMigrator: DatabaseMigrator = {
         var dbMigrator = DatabaseMigrator()
         
         #if DEBUG
