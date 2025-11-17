@@ -29,14 +29,14 @@ public struct BasicStateView<ViewData: Sendable & Equatable, LoadingContent: Vie
             case .notFound:
                 ContentUnavailableView(
                     label: {
-                        Label("Error", systemImage: "exclamationmark.circle")
+                        Label(.error, systemImage: "exclamationmark.circle")
                             .foregroundStyle(.primary, .red)
                     },
                     description: {
-                        Text("NotFound")
+                        Text(.notFound)
                     },
                     actions: {
-                        Button("Retry", action: retry)
+                        Button(.retry, action: retry)
                             .buttonStyle(.borderedProminent)
                     }
                 )
@@ -47,14 +47,14 @@ public struct BasicStateView<ViewData: Sendable & Equatable, LoadingContent: Vie
             case let .error(error):
                 ContentUnavailableView(
                     label: {
-                        Label("Error", systemImage: "xmark")
+                        Label(.error, systemImage: "xmark")
                             .foregroundStyle(.primary, .red)
                     },
                     description: {
                         Text(error.localizedDescription)
                     },
                     actions: {
-                        Button("Retry", action: retry)
+                        Button(.retry, action: retry)
                             .buttonStyle(.borderedProminent)
                     }
                 )

@@ -16,8 +16,6 @@ struct SearchableLeaguesView: View {
     
     @State private var viewModel: SearchableLeaguesViewModel
     
-    @State private var searchText: String = ""
-    
     static func make(_ vm: SearchableLeaguesViewModel) -> Self {
         SearchableLeaguesView(viewModel: vm)
     }
@@ -35,10 +33,14 @@ struct SearchableLeaguesView: View {
             state: $loadingState,
             dataContent: { _ in
                 SearchableTeamsGridView(teams: viewModel.teams)
-                    .navigationTitle("SearchableLeaguesView.Title")
+                    .navigationTitle(.searchableLeaguesViewTitle)
                     .navigationBarTitleDisplayMode(.inline)
                     .scrollIndicators(.hidden)
-                    .searchable(text: $viewModel.searchString, placement: .automatic, prompt: "SearchableLeaguesView.SearchablePrompt")
+                    .searchable(
+                        text: $viewModel.searchString,
+                        placement: .automatic,
+                        prompt: .searchableLeaguesViewSearchablePrompt
+                    )
                     .searchSuggestions({
                         ForEach(viewModel.suggestions.map(\.name), id: \.self) { league in
                             Text(league)
@@ -77,9 +79,8 @@ fileprivate struct SearchableTeamsGridView: View {
                     ForEach(teams, id: \.id) { team in
                         TeamView(team: team)
                     }
-                }
+                }.padding()
             }
-            .padding()
         }
     }
 }

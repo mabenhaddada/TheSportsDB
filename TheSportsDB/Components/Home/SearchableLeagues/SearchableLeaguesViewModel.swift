@@ -12,7 +12,8 @@ import AsyncAlgorithms
 
 @Observable @MainActor
 class SearchableLeaguesViewModel {
-    var searchString: String = ""
+    var searchString: String = .empty
+    
     private let channel = AsyncChannel<String>()
     
     private(set) var suggestions: [League] = []
@@ -29,11 +30,15 @@ class SearchableLeaguesViewModel {
     @Dependency(\.theSportsDBService) private var theSportsDBService
     
     private init() {
-        subscribe()
-        
-        Task {
-            for await query in channel.removeDuplicates().debounce(for: .seconds(0.3)) {
-                searchTeams(for: query)
+        if #available(iOS 26.0, *) {
+            iOS26Observation()
+        } else {
+            priorToiOS26Observation()
+            
+            Task {
+                for await query in channel.removeDuplicates().debounce(for: .seconds(0.3)) {
+                    searchTeams(for: query)
+                }
             }
         }
     }
@@ -60,7 +65,22 @@ extension SearchableLeaguesViewModel {
         }
     }
     
-    func subscribe() {
+    @available(iOS 26.0, *)
+    func iOS26Observation() {
+        Task { [weak self] in
+            let values = Observations { [weak self] in
+                guard let self else { return String.empty }
+                return self.searchString
+            }
+            
+            for await query in values.removeDuplicates().debounce(for: .seconds(0.3)) {
+                guard let self else { break }
+                self.searchTeams(for: query)
+            }
+        }
+    }
+    
+    func priorToiOS26Observation() {
         withObservationTracking({
             withMutation(keyPath: \.searchString, {
                 setChannel(query: searchString)
@@ -69,7 +89,7 @@ extension SearchableLeaguesViewModel {
             guard let self else { return }
             
             Task { @MainActor in
-                self.subscribe()
+                self.priorToiOS26Observation()
             }
         })
     }
@@ -96,6 +116,9 @@ extension SearchableLeaguesViewModel {
         guard let league = leagues.first(where: { $0.name == searchString }) else { return }
         
         teams = try await theSportsDBService.getTeams(league.id)
-            .sorted(using: KeyPathComparator(\.name, order: .forward))
+            .sorted(using: KeyPathComparator(\.name, order: .reverse))
+            .enumerated().compactMap({
+                $0.offset.isMultiple(of: 2) ? $0.element : nil
+            })
     }
 }
